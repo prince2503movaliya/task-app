@@ -1,0 +1,282 @@
+<div class="container-fluid mt-4">
+
+<!-- HEADER -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="fw-bold mb-0"><%= pageTitle %></h4>
+</div>
+
+<!-- SEARCH -->
+<div class="mb-3 search-wrapper">
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="taskSearch" class="search-input" placeholder="Search tasks...">
+  </div>
+</div>
+
+<!-- NO RESULTS -->
+<div id="noResults" class="text-center text-muted mt-4 px-0" style="display:none;">
+  No tasks found
+</div>
+
+<!-- TASK LIST -->
+<div class="row g-3">
+
+<% tasks.forEach((task) => { 
+
+const today = new Date();
+today.setHours(0,0,0,0);
+
+let due = task.dueDate ? new Date(task.dueDate) : null;
+if(due) due.setHours(0,0,0,0);
+
+let dueText = "No due date";
+let dueClass = "text-muted";
+
+/* ===========================
+   FIXED LOGIC (IMPORTANT)
+=========================== */
+
+if(task.status === 'Completed'){
+    if(due){
+        if(due >= today){
+            dueText = "Completed on time";
+            dueClass = "text-success fw-semibold";
+        } else {
+            dueText = "Completed late";
+            dueClass = "text-danger fw-semibold";
+        }
+    } else {
+        dueText = "Completed";
+        dueClass = "text-success fw-semibold";
+    }
+}
+else if(due){
+    const diffTime = due - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if(diffDays === 0){
+        dueText = "Due Today";
+        dueClass = "text-primary fw-semibold";
+    } else if(diffDays === 1){
+        dueText = "Due Tomorrow";
+        dueClass = "text-primary fw-semibold";
+    } else if(diffDays > 1){
+        dueText = `Due in ${diffDays} days`;
+        dueClass = "text-primary fw-semibold";
+    } else {
+        dueText = `Overdue by ${Math.abs(diffDays)} days`;
+        dueClass = "text-danger fw-semibold";
+    }
+}
+
+%>
+
+<!-- CARD -->
+<div class="col-12">
+  <div class="task-card mb-1 shadow-sm 
+
+  <% if(task.status === 'Completed'){ %>
+    task-completed
+  <% } else if(due && due < today){ %>
+    task-overdue
+  <% } else if(task.status==='Pending'){ %>
+    task-pending
+  <% } else if(task.status==='In Progress'){ %>
+    task-progress
+  <% } %>">
+
+    <div class="task-flex">
+
+      <!-- LEFT -->
+      <div class="task-left">
+        <h6 class="task-title"><%= task.title %></h6>
+
+        <div class="task-meta">
+          <span>
+            <i class="fa-solid fa-calendar me-1"></i>
+            <span class="<%= dueClass %>"><%= dueText %></span>
+          </span>
+
+          <span>
+            Priority:
+            <% if(task.priority==="High"){ %>
+              <span class="badge bg-danger">High</span>
+            <% } else if(task.priority==="Medium"){ %>
+              <span class="badge bg-warning text-dark">Medium</span>
+            <% } else { %>
+              <span class="badge bg-success">Low</span>
+            <% } %>
+          </span>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="task-right">
+
+        <span class="badge 
+        <%= task.status === 'Completed'
+        ? 'bg-success'
+        : task.status === 'In Progress'
+        ? 'bg-secondary'
+        : 'bg-warning text-dark' %>">
+          <%= task.status %>
+        </span>
+
+        <div class="task-actions d-flex align-items-center gap-2">
+
+          <button class="btn btn-info btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#taskModal<%= task._id %>">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+
+          <a href="/tasks/<%= task._id %>/edit" class="btn btn-warning btn-sm">
+            <i class="fa-solid fa-pen"></i>
+          </a>
+
+          <form action="/tasks/<%= task._id %>/delete" method="POST" class="m-0">
+            <button class="btn btn-danger btn-sm">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="taskModal<%= task._id %>" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+
+    <div class="modal-content custom-modal
+
+    <% if(task.status === 'Completed'){ %>
+      modal-completed
+    <% } else if(due && due < today){ %>
+      modal-overdue
+    <% } else if(task.status==='Pending'){ %>
+      modal-pending
+    <% } else if(task.status==='In Progress'){ %>
+      modal-progress
+    <% } %>">
+
+      <!-- TITLE -->
+      <div class="modal-row d-flex justify-content-between align-items-center">
+        <div><strong>Title:</strong> <%= task.title %></div>
+
+        <span class="badge 
+        <%= task.status === 'Completed'
+        ? 'bg-success'
+        : task.status === 'In Progress'
+        ? 'bg-secondary'
+        : 'bg-warning text-dark' %>">
+          <%= task.status %>
+        </span>
+      </div>
+
+      <hr>
+
+      <!-- INFO -->
+      <div class="modal-row d-flex justify-content-between">
+
+        <div>
+          <strong>Priority:</strong>
+          <% if(task.priority==="High"){ %>
+            <span class="badge bg-danger">High</span>
+          <% } else if(task.priority==="Medium"){ %>
+            <span class="badge bg-warning text-dark">Medium</span>
+          <% } else { %>
+            <span class="badge bg-success">Low</span>
+          <% } %>
+        </div>
+
+        <div>
+          <strong>Deadline:</strong>
+
+          <% if(due){ %>
+            <span class="<%= dueClass %>">
+              <%= dueText %>
+              <span class="text-muted small">
+                (<%= new Date(task.dueDate).toDateString() %>)
+              </span>
+            </span>
+          <% } else { %>
+            <span class="text-muted">No Deadline</span>
+          <% } %>
+
+        </div>
+
+      </div>
+
+      <hr />
+
+      <!-- DESCRIPTION -->
+      <div class="modal-row">
+        <strong>Description:</strong>
+
+        <div class="desc-box mt-2">
+          <%= task.description || "No description provided." %>
+        </div>
+      </div>
+
+    <hr />
+
+      <!-- FOOTER -->
+      <div class="modal-footer d-flex justify-content-end gap-2">
+
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+
+        <a href="/tasks/<%= task._id %>/edit" class="btn btn-warning">
+          <i class="fa-solid fa-pen me-1"></i> Edit
+        </a>
+
+        <form action="/tasks/<%= task._id %>/delete" method="POST" class="m-0">
+          <button class="btn btn-danger">
+            <i class="fa-solid fa-trash me-1"></i> Delete
+          </button>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<% }) %>
+
+</div>
+
+<!-- SEARCH SCRIPT -->
+<script>
+const searchInput = document.getElementById("taskSearch");
+const cards = document.querySelectorAll(".task-card");
+const noResults = document.getElementById("noResults");
+
+searchInput.addEventListener("keyup", function(){
+
+  const value = this.value.toLowerCase();
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+
+    const title = card.querySelector(".task-title").textContent.toLowerCase();
+
+    if(title.includes(value)){
+      card.style.display = "";
+      visibleCount++;
+    } else {
+      card.style.display = "none";
+    }
+
+  });
+
+  noResults.style.display = visibleCount === 0 ? "block" : "none";
+
+});
+</script>

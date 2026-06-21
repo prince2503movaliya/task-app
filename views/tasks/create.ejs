@@ -1,0 +1,54 @@
+<h3 class="mb-4">
+ Add Task
+</h3>
+
+<div class="card shadow-sm">
+
+<div class="card-body">
+
+<form action="/tasks" method="POST">
+
+<div class="mb-3">
+<label>Title</label>
+<input type="text" name="title" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Description</label>
+<textarea name="description" class="form-control"></textarea>
+</div>
+
+<div class="mb-3">
+<label>Priority</label>
+
+<select name="priority" class="form-select">
+<option>Low</option>
+<option selected>Medium</option>
+<option>High</option>
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label>Due Date</label>
+
+<input
+type="date"
+name="dueDate"
+class="form-control"
+min="<%= new Date().toISOString().split('T')[0] %>"
+
+>
+
+</div>
+
+<button class="btn btn-success">
+Create Task
+</button>
+
+</form>
+
+</div>
+
+</div>

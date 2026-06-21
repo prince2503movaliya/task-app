@@ -1,0 +1,113 @@
+<h3 class="mb-4">
+Dashboard
+</h3>
+
+<div class="row">
+
+<div class="col-md-4">
+
+<div class="card shadow-sm">
+
+<div class="card-body rounded-3 bg-primary  text-white">
+
+<h5>Total Tasks</h5>
+
+<h2><%= totalTasks %></h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow-sm">
+
+<div class="card-body rounded-3 bg-warning text-dark">
+
+<h5>Pending Tasks</h5>
+
+<h2><%= pendingTasks %></h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow-sm">
+
+<div class="card-body rounded-3 bg-success text-white">
+
+<h5>Completed Tasks</h5>
+
+<h2><%= completedTasks %></h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="row mt-4">
+
+<div class="col-md-12">
+
+<div class="card shadow-sm">
+
+<div class="card-body">
+
+<h5 class="mb-3">
+Task Completion
+</h5>
+
+<%
+let percent = totalTasks > 0
+? Math.round((completedTasks / totalTasks) * 100)
+: 0;
+
+let barColor = "bg-danger";
+
+if(percent >= 40 && percent < 70){
+barColor = "bg-warning";
+}
+
+if(percent >= 70){
+barColor = "bg-success";
+}
+%>
+
+<div class="progress" style="height:25px;">
+
+<div
+class="progress-bar <%= barColor %> progress-bar-striped progress-bar-animated"
+role="progressbar"
+style="width: <%= percent %>%"
+>
+
+<%= percent %>%
+
+</div>
+
+</div>
+
+<div class="small text-muted mt-2">
+
+<%= completedTasks %> of <%= totalTasks %> tasks completed
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>

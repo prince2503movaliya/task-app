@@ -1,0 +1,57 @@
+<h3 class="mb-4">
+ Edit Task
+</h3>
+
+<div class="card shadow-sm">
+
+<div class="card-body">
+
+<form action="/tasks/<%= task._id %>/update" method="POST">
+
+<div class="mb-3">
+<label>Title</label>
+<input type="text" name="title" value="<%= task.title %>" class="form-control">
+</div>
+
+<div class="mb-3">
+<label>Description</label>
+<textarea name="description" class="form-control"><%= task.description %></textarea>
+</div>
+
+<div class="mb-3">
+<label>Status</label>
+
+<select name="status" class="form-select">
+
+<option <%= task.status==='Pending'?'selected':'' %>>Pending</option>
+<option <%= task.status==='In Progress'?'selected':'' %>>In Progress</option>
+<option <%= task.status==='Completed'?'selected':'' %>>Completed</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label>Due Date</label>
+
+<input
+type="date"
+name="dueDate"
+value="<%= task.dueDate ? task.dueDate.toISOString().split('T')[0] : '' %>"
+class="form-control"
+min="<%= new Date().toISOString().split('T')[0] %>"
+
+>
+
+</div>
+
+<button class="btn btn-primary">
+<i class="fa-solid fa-save"></i> Update Task
+</button>
+
+</form>
+
+</div>
+
+</div>

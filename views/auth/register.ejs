@@ -1,0 +1,35 @@
+<div class="auth-container">
+
+  <!-- LEFT -->
+  <div class="auth-left">
+    <img src="/images/11879344_Checklist.jpg">
+    
+  <h4>Task Manager</h4>
+  <p>Organize and track your tasks easily</p>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="auth-right">
+
+    <div class="auth-title">Create your account</div>
+
+    <form action="/auth/register" method="POST">
+
+      <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+
+      <input type="email" name="email" class="form-control" placeholder="Email" required>
+
+      <input type="password" name="password" class="form-control" placeholder="Password" required>
+
+      <button class="btn btn-primary btn-auth w-100">Register</button>
+
+    </form>
+
+    <div class="auth-link">
+      Already have an account?
+      <a href="/auth/login">Login</a>
+    </div>
+
+  </div>
+
+</div>

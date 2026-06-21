@@ -1,0 +1,63 @@
+<div class="sidebar-inner d-flex flex-column h-100">
+
+  <ul class="nav flex-column mt-3 px-2">
+
+    <li>
+      <a href="/dashboard"
+        class="nav-link text-white sidebar-link d-flex align-items-center <%= page === 'dashboard' ? 'active' : '' %>">
+        <i class="fa-solid fa-chart-line"></i>
+        <span class="link-text">Dashboard</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/tasks/new"
+        class="nav-link text-white sidebar-link d-flex align-items-center <%= page === 'new-task' ? 'active' : '' %>">
+        <i class="fa-solid fa-plus"></i>
+        <span class="link-text">Add Task</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/tasks"
+        class="nav-link text-white sidebar-link d-flex align-items-center <%= page === 'tasks' ? 'active' : '' %>">
+        <i class="fa-solid fa-list"></i>
+        <span class="link-text">All Tasks</span>
+      </a>
+    </li>
+
+
+    <li>
+      <a href="/tasks/progress"
+        class="nav-link text-white sidebar-link d-flex align-items-center <%= page === 'progress' ? 'active' : '' %>">
+        <i class="fa-solid fa-spinner"></i>
+        <span class="link-text">In Progress</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/tasks/pending"
+        class="nav-link text-white sidebar-link  d-flex align-items-center <%= page === 'pending' ? 'active' : '' %>">
+        <i class="fa-solid fa-hourglass-half"></i>
+        <span class="link-text">Pending</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/tasks/completed"
+        class=" nav-link text-white sidebar-link d-flex align-items-center <%= page === 'completed' ? 'active' : '' %>">
+        <i class="fa-solid fa-check-circle"></i>
+        <span class="link-text">Completed</span>
+      </a>
+    </li>
+
+  </ul>
+
+  <div class="mt-auto px-2 pb-3">
+    <a href="/logout" class="nav-link text-white sidebar-link d-flex align-items-center logout">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span class="link-text">Logout</span>
+    </a>
+  </div>
+
+</div>
